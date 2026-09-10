@@ -1,0 +1,52 @@
+# Assumptions the telemetry cannot supply. Every value here is labelled "assumed" wherever it
+# appears. Owners are the people who can replace an assumption with a fact.
+# visibility: customer  (this whole file is customer-visible; nothing commercial lives here)
+
+baselines:
+  pre_deployment_avg_handle_time_min:
+    value: 11.3
+    owner: Northstar CX operations
+    note: >-
+      Not in the telemetry. Chosen so that the month-end handle time of 7.35 min reproduces the
+      stated 35% reduction. Confirm from Northstar's pre-launch ACD reports before the EBR.
+  pre_deployment_csat_score:
+    value: 72.2
+    owner: Northstar CX operations
+    note: >-
+      Not in the telemetry. Chosen so that the month-end CSAT of 84.2 reproduces the stated
+      12-point gain. Confirm from Northstar's survey tool before the EBR.
+
+slo:
+  availability_pct_monthly:
+    value: 99.9
+    owner: joint (Northstar VP Engineering, Fireworks)
+    note: Proposed. No SLO was agreed at launch; this is the figure the dashboards score against.
+  p95_latency_ms:
+    value: 1500
+    owner: joint
+    note: Proposed interactive-chat budget; month-end P95 sits just under it.
+
+budget:
+  monthly_inference_budget_usd:
+    value: 2000
+    owner: Northstar finance
+    note: Assumed budget line for the flagship deployment; used only for "% of budget" context.
+
+unit_costs:
+  human_tier1_ticket_fully_loaded_usd:
+    value: 4.50
+    owner: Northstar finance
+    note: >-
+      Used for order-of-magnitude framing of inference cost per automated ticket. Not shown as
+      savings to the customer until Northstar confirms the figure.
+
+expansion:
+  pilot_duration_weeks: 8
+  pilot_brand: Kestrel Athletics
+  pilot_success_criteria:
+    automation_rate_pct_min: 60
+    csat_delta_points_min: -1.0
+    grounded_answer_rate_pct_min: 93
+    p95_latency_ms_max: 1800
+    availability_pct_min: 99.9
+    escalation_rate_pct_max: 15

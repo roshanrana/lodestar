@@ -1,0 +1,115 @@
+{
+  "kpis": {
+    "health_score": {
+      "label": "Operational health",
+      "value": "80.2 / 100",
+      "note": "Weighted L7 composite across five pillars; rated healthy.",
+      "accent": "teal"
+    },
+    "claims_verified": {
+      "label": "Headline claims",
+      "value": "1 of 3 from telemetry alone",
+      "note": "3 of 3 reproduce with the stated baselines (assumed, owner Northstar CX ops)",
+      "accent": "amber"
+    },
+    "leak_check": {
+      "label": "Internal fields in customer view",
+      "value": "0 of 37",
+      "note": "Customer AccountView scrubbed of every internal-tagged field before it leaves AccountView.build.",
+      "accent": "violet"
+    },
+    "incidents_detected": {
+      "label": "Incident days detected",
+      "value": "2 of 2",
+      "note": "Detector-flagged days matched against the dataset's own incident annotations.",
+      "accent": "blue"
+    },
+    "weakest_pillar": {
+      "label": "Weakest pillar",
+      "value": "Spend efficiency 65.8",
+      "note": "Lowest-scoring of the five weighted pillars in the operational composite.",
+      "accent": "red"
+    },
+    "cost_per_automated_ticket": {
+      "label": "Inference cost per automated ticket",
+      "value": "$0.0124",
+      "note": "Month total spend divided by month total automated Tier-1 tickets.",
+      "accent": "teal"
+    }
+  },
+  "bars": {
+    "title": "Pillar scores (L7 window)",
+    "rows": [
+      {
+        "label": "Adoption",
+        "value": 80.2,
+        "max": 100,
+        "display": "80.2 / 100",
+        "accent": "teal"
+      },
+      {
+        "label": "Reliability",
+        "value": 87.2,
+        "max": 100,
+        "display": "87.2 / 100",
+        "accent": "blue"
+      },
+      {
+        "label": "Latency",
+        "value": 78.5,
+        "max": 100,
+        "display": "78.5 / 100",
+        "accent": "violet"
+      },
+      {
+        "label": "Quality",
+        "value": 83.1,
+        "max": 100,
+        "display": "83.1 / 100",
+        "accent": "amber"
+      },
+      {
+        "label": "Spend efficiency",
+        "value": 65.8,
+        "max": 100,
+        "display": "65.8 / 100",
+        "accent": "red"
+      }
+    ]
+  },
+  "facts": {
+    "title": "Evidence checked offline",
+    "rows": [
+      {
+        "label": "MCP tools exercised",
+        "value": "6 of 6",
+        "status": "ok"
+      },
+      {
+        "label": "API routes",
+        "value": "6 of 6",
+        "status": "ok"
+      },
+      {
+        "label": "EBR sections present",
+        "value": "8 of 8",
+        "status": "ok"
+      },
+      {
+        "label": "Days below proposed SLO",
+        "value": "27 of 31 at 99.9%",
+        "status": "ok"
+      },
+      {
+        "label": "Request vs automated growth",
+        "value": "requests \u00d71.45 vs automated tickets \u00d71.15 (L7/F7)",
+        "status": "ok"
+      },
+      {
+        "label": "Live provider narrative",
+        "value": "not run offline",
+        "status": "pending"
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "Lodestar account fix",
+  "subtitle": "Every figure computed from the 31-day Northstar telemetry by the same functions that drive both dashboards, the MCP server and the EBR.",
+  "make_target": "make bench",
+  "kpi_order": [
+    "health_score",
+    "claims_verified",
+    "leak_check",
+    "incidents_detected",
+    "weakest_pillar",
+    "cost_per_automated_ticket"
+  ]
+}

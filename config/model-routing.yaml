@@ -1,0 +1,79 @@
+# config/model-routing.yaml — build-time model routing for Lodestar.
+# Owner instruction 2026-09-09: high-capability models for design and orchestration only;
+# nothing above Sonnet-class (effort high) for implementation, testing or verification.
+
+version: 1
+project: "Lodestar"
+approved_providers: [anthropic]
+spend_ceiling_usd: 0
+
+tiers:
+  T0:
+    kind: script
+    notes: "Deterministic. scripts/check.py, scaffold, evidence, render.py, secrets scan."
+  T1:
+    kind: model
+    model: "claude-haiku-4-5-20251001"
+    endpoint: null
+    reasoning: off
+    max_context_tokens: 16000
+    temperature: 0.1
+    may_see: [code, synthetic_data, docs]
+  T2:
+    kind: model
+    model: "claude-sonnet-5"
+    effort: high
+    endpoint: null
+    reasoning: off
+    max_context_tokens: 80000
+    temperature: 0.2
+    may_see: [code, synthetic_data, docs]
+  T3:
+    kind: model
+    model: "claude-fable-5-1"
+    endpoint: null
+    reasoning: on
+    reasoning_budget_tokens: 16000
+    max_context_tokens: 150000
+    may_see: [code, synthetic_data, docs, client_documents]
+    notes: "Design, planning, orchestration, second-strike diagnosis only. Never implements or verifies tasks."
+
+roles:
+  orchestrator: T3        # this session; writes no application code
+  architect: T3
+  planner: T3
+  implementer:
+    template: T2          # owner cap: Sonnet
+    normal: T2
+    high: T2              # Sonnet with reasoning on; never T3 (owner instruction)
+  verifier:
+    low: T2
+    medium: T2
+    high: T2              # fresh Sonnet context; cross-context, same family
+  security_reviewer:
+    low: T0
+    medium: T2
+    high: T2
+  evidence: T0            # scripts/shipyard/evidence.py driven by the orchestrator
+
+cross_model_verification:
+  enabled: false
+  verifier_model: null
+  note: "Owner cap forbids a higher family; independence comes from fresh contexts."
+
+escalation:
+  max_attempts_per_task: 2
+  escalate_on: [reasoning_bound]
+  step: 0                 # cannot step above T2; second strike enables reasoning: on and escalates to the orchestrator for diagnosis
+
+budgets:
+  template: {input_tokens: 15000, tool_calls: 10, wall_clock_min: 10}
+  normal:   {input_tokens: 40000, tool_calls: 40, wall_clock_min: 45}
+  high:     {input_tokens: 80000, tool_calls: 80, wall_clock_min: 120}
+  verifier_ratio: 0.4
+  security_ratio: {medium: 0.25, high: 0.6}
+
+parallelism:
+  max_implementers_per_wave: 3
+  ci_runners: 2
+  local_inference_batch: 4

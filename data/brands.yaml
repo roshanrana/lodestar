@@ -1,0 +1,131 @@
+# Northstar Retail Group brand profiles. The prompt referenced brand descriptions that were not
+# supplied; these are fictional and labelled as assumptions wherever displayed.
+#
+# Field visibility is enforced by lodestar.brands models:
+#   customer-visible : name, category, sku_count, tier1_tickets_per_day, agents, support_tooling,
+#                      tone, policy_notes, catalog_notes, proposed_sequence, proposed_window,
+#                      readiness_summary, fit (dimension scores and fit_score are shown to the
+#                      customer as "readiness" without the internal weights commentary)
+#   internal-only    : stage, confidence_pct, est_monthly_inference_usd, est_annual_value_usd,
+#                      blockers, competitive_note, margin_note, internal_owner, target_date
+
+flagship:
+  name: Polaris
+  category: Apparel and outdoor
+  sku_count: 24000
+  tier1_tickets_per_day: 4600
+  agents: 38
+  support_tooling: Zendesk (API), Fireworks fine-tuned model + RAG over catalog
+  tone: Warm, practical, outdoorsy
+  policy_notes: 60-day returns, free exchanges
+  catalog_notes: Seasonal drops; sizing questions dominate Tier-1
+
+fit_weights:              # weights sum to 1.0; each dimension scored 1 (hard) to 5 (easy)
+  volume: 0.20            # more tickets, more value
+  catalog_simplicity: 0.20
+  tooling_readiness: 0.25 # API-first help desk, clean ticket export
+  policy_simplicity: 0.15
+  data_readiness: 0.10    # labelled historical transcripts
+  sponsor_readiness: 0.10 # brand GM engagement
+
+brands:
+  - name: Kestrel Athletics
+    category: Athletic apparel and footwear
+    sku_count: 22000
+    tier1_tickets_per_day: 3100
+    agents: 30
+    support_tooling: Salesforce Service Cloud (API-first)
+    tone: Energetic, coach-like, concise
+    policy_notes: 45-day returns; exchanges common (sizing)
+    catalog_notes: Similar shape to Polaris; sizing and order-status questions dominate
+    proposed_sequence: 1
+    proposed_window: "Weeks 1-8 (pilot)"
+    readiness_summary: Closest profile to the flagship, API-first tooling, engaged brand leadership
+    fit: {volume: 4, catalog_simplicity: 4, tooling_readiness: 5, policy_simplicity: 4, data_readiness: 4, sponsor_readiness: 5}
+    # --- internal-only below ---
+    stage: Pilot proposed
+    confidence_pct: 75
+    est_monthly_inference_usd: 1050
+    est_annual_value_usd: 190000
+    blockers:
+      - Salesforce sandbox access request open since 2026-08-26
+      - Kestrel wants its own eval golden set signed off by its CX lead
+    competitive_note: Salesforce Einstein bundled bot demoed to Kestrel GM in July; GM prefers measured flagship results
+    margin_note: Adapter on shared base keeps serving cost near flagship unit cost; services effort ~3 FDE-weeks
+    internal_owner: Fireworks FDE (account lead)
+    target_date: "2026-11-30"
+
+  - name: Little Compass
+    category: Kids and baby
+    sku_count: 28000
+    tier1_tickets_per_day: 2400
+    agents: 22
+    support_tooling: Freshdesk
+    tone: Reassuring, safety-first
+    policy_notes: Product-safety and recall handling; gift returns
+    catalog_notes: Strong seasonality (back-to-school, holiday); volume roughly triples at peak
+    proposed_sequence: 2
+    proposed_window: "Q1 after holiday peak"
+    readiness_summary: Good fit once the pilot playbook exists; avoid launching into holiday peak
+    fit: {volume: 3, catalog_simplicity: 3, tooling_readiness: 3, policy_simplicity: 3, data_readiness: 2, sponsor_readiness: 4}
+    stage: Qualified
+    confidence_pct: 55
+    est_monthly_inference_usd: 900
+    est_annual_value_usd: 140000
+    blockers:
+      - Freshdesk export lacks resolution codes; needs a tagging pass
+      - Recall-handling flows must stay human-only (policy)
+    competitive_note: None active; Freshdesk Freddy AI trial lapsed
+    margin_note: Peak-season autoscaling could push serving cost 2-3x for six weeks
+    internal_owner: Fireworks FDE
+    target_date: "2027-02-28"
+
+  - name: Lumen Beauty
+    category: Cosmetics and skincare
+    sku_count: 9000
+    tier1_tickets_per_day: 1900
+    agents: 18
+    support_tooling: Gorgias on Shopify
+    tone: Expert, gentle, precise
+    policy_notes: Ingredient, allergen and usage questions border on medical advice; strict claims policy
+    catalog_notes: Small catalog, high question sensitivity
+    proposed_sequence: 3
+    proposed_window: "Q1-Q2, after safety-policy review"
+    readiness_summary: Small and technically simple, but answer-safety policy must be designed first
+    fit: {volume: 2, catalog_simplicity: 4, tooling_readiness: 4, policy_simplicity: 2, data_readiness: 2, sponsor_readiness: 2}
+    stage: Early
+    confidence_pct: 35
+    est_monthly_inference_usd: 600
+    est_annual_value_usd: 95000
+    blockers:
+      - Brand GM sceptical after a competitor bot gave allergen advice publicly
+      - Legal review of answer-safety guardrails not started
+    competitive_note: Gorgias AI Agent is the default path of least resistance for this team
+    margin_note: Low volume; value is strategic (whole-group standardisation) more than revenue
+    internal_owner: Fireworks solutions architect
+    target_date: "2027-05-31"
+
+  - name: Meridian Home
+    category: Home and furniture
+    sku_count: 140000
+    tier1_tickets_per_day: 6200
+    agents: 45
+    support_tooling: Zendesk with custom order-management middleware
+    tone: Calm, detailed, service-oriented
+    policy_notes: Bulky-item returns, white-glove delivery scheduling, damage claims
+    catalog_notes: Configurable furniture; catalog complexity is the highest in the group
+    proposed_sequence: 4
+    proposed_window: "Q2, after catalog-RAG hardening"
+    readiness_summary: Largest volume and value; needs the catalog-RAG pattern proven at scale first
+    fit: {volume: 5, catalog_simplicity: 1, tooling_readiness: 3, policy_simplicity: 2, data_readiness: 3, sponsor_readiness: 3}
+    stage: Discovery
+    confidence_pct: 40
+    est_monthly_inference_usd: 2400
+    est_annual_value_usd: 360000
+    blockers:
+      - Order-management middleware has no documented API
+      - Catalog sync incident on 2026-08-09 was a Meridian-style catalog; needs the fix generalised
+    competitive_note: Incumbent CCaaS vendor pitching bundled agent-assist to Meridian ops director
+    margin_note: Highest revenue; also highest services cost (catalog ingestion, middleware adapter)
+    internal_owner: Fireworks FDE + partner SI
+    target_date: "2027-06-30"

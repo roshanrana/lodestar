@@ -1,0 +1,106 @@
+# Account context that telemetry cannot carry. Fictional. Visibility is per section and per
+# item and is enforced by lodestar.risks / lodestar.audience models. Anything not explicitly
+# tagged `visibility: customer` is internal-only (fail closed).
+
+account:
+  name: Northstar Retail Group
+  segment: Strategic
+  flagship_brand: Polaris
+  deployment: northstar-flagship-support-ft-v1
+  go_live_date: 2026-08-01
+  contract_renewal_date: 2027-07-31          # internal
+  current_arr_usd: 210000                    # internal
+  fireworks_account_lead: A. Okafor          # internal
+  fireworks_fde: R. Rana                     # internal
+
+# --- Relationship pillar inputs (internal-only), 0-100, higher is better -------------------
+relationship:
+  executive_sponsor_engagement: 80   # VP CX sponsors; attends monthly
+  champion_strength: 85              # CX platform lead drives adoption, shares data proactively
+  stakeholder_coverage: 55           # VP Eng lightly engaged; no CFO contact; 3 of 4 brand GMs unmet
+  renewal_outlook: 75                # renewal 11 months out; no signals of churn; budget owner unclear
+  competitive_position: 60           # incumbent CCaaS bundling agent-assist; hyperscaler credits offered
+
+stakeholders:                         # internal-only
+  - {name: VP Customer Experience, role: Executive sponsor, coverage: strong, last_touch: 2026-08-28}
+  - {name: VP Engineering, role: Technical approver, coverage: light, last_touch: 2026-08-12}
+  - {name: CX platform lead, role: Champion, coverage: strong, last_touch: 2026-09-02}
+  - {name: CFO / finance BP, role: Budget owner, coverage: none, last_touch: null}
+  - {name: Kestrel Athletics GM, role: Expansion sponsor, coverage: medium, last_touch: 2026-08-20}
+  - {name: Meridian Home ops director, role: Expansion gatekeeper, coverage: none, last_touch: null}
+
+# --- Static risks (data-derived risks are generated in code and merged with these) ---------
+risks:
+  - id: R-REL-1
+    title: Stakeholder coverage is thin beyond the CX organisation
+    category: relationship
+    severity: high
+    likelihood: medium
+    visibility: internal
+    detail: >-
+      Expansion needs VP Engineering, finance and four brand GMs. Today the relationship runs
+      through CX. A budget conversation without a finance contact will stall.
+    mitigation: Joint architecture review with VP Eng in September; ask sponsor for a finance intro at the EBR.
+  - id: R-COMP-1
+    title: Incumbent contact-center vendor is bundling agent-assist
+    category: competitive
+    severity: medium
+    likelihood: medium
+    visibility: internal
+    detail: >-
+      Bundled pricing and one-throat-to-choke appeal to Meridian and Lumen operations teams that
+      have not seen the flagship results first-hand.
+    mitigation: Put measured flagship results in front of brand GMs before their vendor renewals.
+  - id: R-EXEC-1
+    title: Four brands, four help-desk stacks, four operating teams
+    category: execution
+    severity: high
+    likelihood: high
+    visibility: customer
+    detail: >-
+      Each brand has its own tooling, tone, policy and team. Without a shared platform owner
+      and a shared evaluation harness the rollout fragments into four bespoke bots.
+    mitigation: Name a Northstar CX platform owner; use the shared-base plus brand-adapter architecture; prove the playbook on one pilot.
+  - id: R-TECH-3
+    title: Answer-safety policy for regulated product questions
+    category: technical
+    severity: medium
+    likelihood: medium
+    visibility: customer
+    detail: Lumen Beauty questions touch allergens and usage; the flagship guardrails were not designed for this.
+    mitigation: Design and evaluate answer-safety guardrails before any Lumen pilot.
+
+# --- Internal dependencies, support burden, decisions ---------------------------------------
+dependencies:                         # internal-only
+  - {item: Multi-adapter serving GA on the account's deployment class, owner: Fireworks product, status: committed Q4, blocking: expansion architecture}
+  - {item: Catalog-sync resilience fix generalised, owner: Fireworks FDE, status: in progress, blocking: Meridian discovery}
+  - {item: Salesforce sandbox for Kestrel, owner: Northstar IT, status: requested 2026-08-26, blocking: pilot week 1}
+  - {item: Pre-launch AHT and CSAT baselines, owner: Northstar CX ops, status: requested, blocking: EBR credibility}
+
+support_burden:                       # internal-only
+  fde_hours_month_1: 46
+  incidents_month_1: 2
+  support_tickets_month_1: 7
+  on_call_pages_month_1: 1
+  note: Month-1 effort concentrated on the catalog-sync incident and the promotion-day autoscaling change; expected to halve in month 2.
+
+margin:                               # internal-only
+  serving_gross_margin_pct_estimate: 62
+  services_hours_unbilled_month_1: 30
+  note: Flagship unit economics are healthy; expansion services effort is the margin risk, not inference.
+
+decisions_needed:                     # internal-only
+  - {decision: Fund 3 FDE-weeks for the Kestrel pilot, owner: Fireworks sales leadership, by: "2026-09-19"}
+  - {decision: Commit multi-adapter serving date to the customer, owner: Fireworks product, by: "2026-09-26"}
+  - {decision: Propose 99.9% availability SLO with credits, owner: Account lead, by: "2026-09-19"}
+
+# --- Next actions. visibility: customer items are the "joint next steps" the customer sees. --
+next_actions:
+  - {action: Confirm pre-launch AHT and CSAT baselines from ACD and survey exports, owner: Northstar CX ops, due: "2026-09-16", visibility: customer}
+  - {action: Agree availability and P95 SLOs for the flagship deployment, owner: Northstar VP Eng + Fireworks, due: "2026-09-23", visibility: customer}
+  - {action: Attribute request growth to conversation depth vs new use cases, owner: Fireworks FDE + CX platform lead, due: "2026-09-19", visibility: customer}
+  - {action: Kick off Kestrel Athletics pilot; secure Salesforce sandbox, owner: Kestrel GM + Fireworks FDE, due: "2026-09-30", visibility: customer}
+  - {action: Joint architecture review of shared-base plus brand-adapter plan, owner: Northstar VP Eng + Fireworks SA, due: "2026-09-26", visibility: customer}
+  - {action: Secure finance business-partner introduction via VP CX, owner: Account lead, due: "2026-09-19", visibility: internal}
+  - {action: Brief Meridian ops director on flagship results before CCaaS renewal, owner: Account lead, due: "2026-10-10", visibility: internal}
+  - {action: Internal go/no-go on pilot staffing (3 FDE-weeks), owner: Fireworks sales leadership, due: "2026-09-19", visibility: internal}
